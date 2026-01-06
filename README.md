@@ -4,7 +4,6 @@ CamViewer is a Raspberry Pi–based fullscreen RTSP IP camera viewer controlled 
 HDMI-CEC using the TV remote.
 
 It is designed as a kiosk-style appliance:
-
 - no desktop environment
 - no mouse or keyboard required
 - stable fullscreen video via ffplay
@@ -28,6 +27,7 @@ playback device so that TVs (especially Samsung models) recognize it properly.
 
 ## Architecture Overview
 
+```
 TV Remote (HDMI-CEC)
         |
         v
@@ -35,7 +35,7 @@ TV Remote (HDMI-CEC)
 | ipcams-cec-daemon.py        |
 |  - registers HDMI OSD name  |
 |  - listens for CEC keys     |
-|  - translates to commands  |
+|  - translates to commands   |
 +-------------+---------------+
               |
               | Unix socket (/run/ipcams)
@@ -43,17 +43,19 @@ TV Remote (HDMI-CEC)
 +-----------------------------+
 | cam-switcher.py             |
 |  - manages ffplay           |
-|  - switches RTSP streams   |
-|  - runs fullscreen on tty1 |
+|  - switches RTSP streams    |
+|  - runs fullscreen on tty1  |
 +-------------+---------------+
               |
               v
          HDMI Video Output
+```
 
 ---
 
 ## Repository Layout
 
+```
 camviewer/
 ├── bin/
 │   └── ipcams-cec-daemon.py
@@ -67,27 +69,26 @@ camviewer/
 │   └── rtsp.env.example
 ├── .gitignore
 └── README.md
+```
 
 ---
 
 ## Remote Control Mapping
 
 Observed on a Samsung TV remote (other TVs may differ):
-
 - Fast Forward (CEC 0x49): next camera
 - Rewind (CEC 0x48): previous camera
 
-Key codes verified using cec-ctl --monitor.
+Key codes verified using `cec-ctl --monitor`.
 
 ---
 
 ## HDMI-CEC Behavior (Important)
 
 To avoid stealing HDMI focus from other active inputs:
-
-- IMAGE_VIEW_ON (0x04) and ACTIVE_SOURCE (0x82) are sent once only
+- `IMAGE_VIEW_ON` (0x04) and `ACTIVE_SOURCE` (0x82) are sent once only
   at daemon startup
-- This allows the TV to learn the device name (“Cams”)
+- This allows the TV to learn the device name ("Cams")
 - After that, only polite identification keepalive messages are sent
 - The TV will not be forced to switch inputs repeatedly
 
@@ -101,29 +102,33 @@ RTSP configuration is provided via an environment file.
 
 Copy and edit:
 
-    cp env/rtsp.env.example env/rtsp.env
+```bash
+cp env/rtsp.env.example env/rtsp.env
+```
 
 Example content:
 
-    RTSP_USER=admin
-    RTSP_PASS=CHANGE_ME
-    RTSP_DOMAIN=lan
-    RTSP_PORT=554
-    RTSP_PATH=/h264Preview_01_sub
+```bash
+RTSP_USER=admin
+RTSP_PASS=CHANGE_ME
+RTSP_DOMAIN=lan
+RTSP_PORT=554
+RTSP_PATH=/h264Preview_01_sub
+```
 
-Do not commit rtsp.env.
+**Do not commit `rtsp.env`.**
 
 ---
 
 ## systemd Services
 
-- ipcams-cec-daemon.service  
+- **ipcams-cec-daemon.service**  
   Registers the HDMI-CEC playback device and listens for TV remote keys.
 
-- cam-switcher.service  
+- **cam-switcher.service**  
   Runs ffplay on tty1 and switches between RTSP streams.
 
-- clear-tty1.service  
+- **clear-tty1.service**  
   Clears boot messages from tty1 for kiosk operation.
 
 ---
@@ -132,18 +137,21 @@ Do not commit rtsp.env.
 
 Paths may be adjusted to your environment.
 
-    sudo cp scripts/cam-switcher.py /home/ronzo/scripts/
-    sudo cp env/rtsp.env.example /home/ronzo/scripts/rtsp.env
-    sudo nano /home/ronzo/scripts/rtsp.env
+```bash
+sudo cp scripts/cam-switcher.py /home/ronzo/scripts/
+sudo cp env/rtsp.env.example /home/ronzo/scripts/rtsp.env
+sudo nano /home/ronzo/scripts/rtsp.env
 
-    sudo cp bin/ipcams-cec-daemon.py /usr/local/bin/
-    sudo chmod +x /usr/local/bin/ipcams-cec-daemon.py
+sudo cp bin/ipcams-cec-daemon.py /usr/local/bin/
+sudo chmod +x /usr/local/bin/ipcams-cec-daemon.py
 
-    sudo cp systemd/*.service /etc/systemd/system/
-    sudo systemctl daemon-reload
-    sudo systemctl enable --now ipcams-cec-daemon.service
-    sudo systemctl enable --now cam-switcher.service
-    sudo systemctl enable --now clear-tty1.service
+sudo cp systemd/*.service /etc/systemd/system/
+sudo systemctl daemon-reload
+
+sudo systemctl enable --now ipcams-cec-daemon.service
+sudo systemctl enable --now cam-switcher.service
+sudo systemctl enable --now clear-tty1.service
+```
 
 ---
 
