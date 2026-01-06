@@ -168,6 +168,8 @@ sudo systemctl enable --now cam-switcher.service
 sudo systemctl enable --now clear-tty1.service
 ```
 
+For a detailed, step-by-step installation guide, see `INSTALL.md`.
+
 ---
 
 ## Requirements
@@ -181,6 +183,9 @@ sudo systemctl enable --now clear-tty1.service
 ---
 
 ## Hardware Platform and Performance Considerations
+
+Most modern IP cameras expose both a main stream and a sub-stream; the latter is
+specifically intended for low-latency monitoring and is ideal for CamViewer.
 
 The reference system for CamViewer is a **Raspberry Pi Zero 2 W**.
 
