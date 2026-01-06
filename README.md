@@ -180,6 +180,8 @@ For a detailed, step-by-step installation guide, see `INSTALL.md`.
 - cec-utils (cec-ctl)
 - TV with HDMI-CEC enabled (Samsung: AnyNet+)
 
+The reference setup uses Raspberry Pi OS Lite without a desktop environment.
+
 ---
 
 ## Hardware Platform and Performance Considerations
