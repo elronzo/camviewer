@@ -28,27 +28,27 @@ playback device so that TVs (especially Samsung models) recognize it properly.
 
 ## Architecture Overview
 
-TV Remote (CEC)
+TV Remote (HDMI-CEC)
         |
         v
-+--------------------------+
-| ipcams-cec-daemon.py     |
-| - registers HDMI name    |
-| - listens for keys       |
-| - sends switch commands  |
-+-----------+--------------+
-            |
-            | Unix socket (/run/ipcams)
-            v
-+--------------------------+
-| cam-switcher.py          |
-| - manages ffplay         |
-| - switches cameras       |
-| - runs on tty1           |
-+-----------+--------------+
-            |
-            v
-        HDMI Output
++-----------------------------+
+| ipcams-cec-daemon.py        |
+|  - registers HDMI OSD name  |
+|  - listens for CEC keys     |
+|  - translates to commands  |
++-------------+---------------+
+              |
+              | Unix socket (/run/ipcams)
+              v
++-----------------------------+
+| cam-switcher.py             |
+|  - manages ffplay           |
+|  - switches RTSP streams   |
+|  - runs fullscreen on tty1 |
++-------------+---------------+
+              |
+              v
+         HDMI Video Output
 
 ---
 
