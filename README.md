@@ -21,7 +21,6 @@ playback device so that TVs (especially Samsung models) recognize it properly.
 - Works on Raspberry Pi OS (Bookworm / Trixie)
 - systemd-managed services
 - Clean separation between player logic, HDMI-CEC handling and configuration
-- No secrets committed to git
 
 ---
 
