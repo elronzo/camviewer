@@ -175,7 +175,7 @@ For a detailed, step-by-step installation guide, see `INSTALL.md`.
 ## Requirements
 
 - Raspberry Pi with HDMI-CEC capable port
-- Raspberry Pi OS (Bookworm or newer)
+- Raspberry Pi OS (Bookworm or newer, I am using Trixie)
 - ffmpeg / ffplay
 - cec-utils (cec-ctl)
 - TV with HDMI-CEC enabled (Samsung: AnyNet+)
