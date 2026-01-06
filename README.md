@@ -182,6 +182,64 @@ sudo systemctl enable --now clear-tty1.service
 
 ---
 
+## Hardware Platform and Performance Considerations
+
+The reference system for CamViewer is a **Raspberry Pi Zero 2 W**.
+
+This works reliably **when using camera sub-streams** (low resolution / low bitrate),
+which is the recommended mode for kiosk-style, always-on monitoring.
+
+### Tested Reference Setup
+
+- **Raspberry Pi Zero 2 W**
+- HDMI output at 1080p
+- RTSP **sub-stream** (typically 640×360 or 720×576, H.264)
+- `ffplay` with low-latency flags
+- Single camera displayed at a time
+
+Under these conditions, CPU load remains low and playback is stable.
+
+---
+
+## Raspberry Pi Hardware Recommendations
+
+CamViewer itself is lightweight; performance is dominated by **RTSP decode**.
+The following guidance applies:
+
+### Recommended by Stream Type
+
+| Stream Type | Recommended Hardware |
+|------------|---------------------|
+| Sub-stream (≤ 720p, low bitrate) | Raspberry Pi Zero 2 W |
+| 1080p main stream (single camera) | Raspberry Pi 3B+ or Pi 4 |
+| 4K or high-bitrate 1080p | Raspberry Pi 4 (2 GB+ RAM) |
+| Multiple cameras / future grid view | Raspberry Pi 4 or Pi 5 |
+
+### Notes
+
+- H.264 is strongly recommended; H.265 decoding support varies by model and OS.
+- Hardware decoding is handled by the VideoCore GPU; CPU usage scales mostly with bitrate.
+- Using camera sub-streams dramatically reduces latency, heat and power usage.
+- Only **one stream is decoded at a time** in the current design.
+
+---
+
+## General Recommendation
+
+For a **simple, reliable, low-power camera viewer**, a Raspberry Pi Zero 2 W is sufficient
+and preferred.
+
+If you intend to:
+- use main streams instead of sub-streams
+- increase resolution or bitrate
+- experiment with multi-camera layouts
+
+then a Raspberry Pi 4 or newer is recommended.
+
+The software design does not depend on a specific Raspberry Pi model.
+
+---
+
 ## Screen and TTY Handling
 
 CamViewer runs directly on `tty1` without a desktop environment.
