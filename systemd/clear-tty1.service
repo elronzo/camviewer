@@ -1,0 +1,12 @@
+[Unit]
+Description=Clear tty1 after boot
+After=cam-switcher.service
+Requires=cam-switcher.service
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c 'printf "\033[2J\033[H\033[3J" > /dev/tty1'
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

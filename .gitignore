@@ -1,0 +1,9 @@
+# secrets
+env/rtsp.env
+env/*.local
+*.env
+
+# runtime
+*.pyc
+__pycache__/
+.run/

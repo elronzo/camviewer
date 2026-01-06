@@ -1,0 +1,35 @@
+[Unit]
+Description=IP Cams Switcher (ffplay on tty1)
+Wants=network-online.target
+After=network-online.target
+Wants=ipcams-cec-daemon.service
+After=ipcams-cec-daemon.service
+Conflicts=getty@tty1.service
+After=getty@tty1.service
+
+[Service]
+Type=simple
+User=ronzo
+WorkingDirectory=/home/ronzo/scripts
+EnvironmentFile=/home/ronzo/scripts/rtsp.env
+
+RuntimeDirectory=ipcams
+RuntimeDirectoryMode=0777
+Environment=CAM_SWITCH_SOCK=/run/ipcams/cam-switch.sock
+Environment=XDG_RUNTIME_DIR=/run/ipcams
+
+ExecStart=/usr/bin/python3 /home/ronzo/scripts/cam-switcher.py
+Restart=on-failure
+RestartSec=2
+
+StandardInput=tty
+TTYPath=/dev/tty1
+TTYReset=yes
+TTYVHangup=no
+TTYVTDisallocate=no
+
+StandardOutput=null
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

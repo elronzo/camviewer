@@ -1,0 +1,32 @@
+[Unit]
+Description=IP Cams HDMI-CEC daemon (keepalive + TV remote control)
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+
+# --- Runtime directory (created by systemd) ---
+RuntimeDirectory=ipcams
+RuntimeDirectoryMode=0777
+
+# --- Environment ---
+Environment=CEC_DEV=/dev/cec0
+Environment=CEC_OSD_BASE=Cams
+Environment=CEC_FORCE_ACTIVE=0
+
+# Must match cam-switcher.service
+Environment=CAM_SWITCH_SOCK=/run/ipcams/cam-switch.sock
+Environment=RUNTIME_DIR=/run/ipcams
+
+# --- Start ---
+ExecStart=/usr/bin/python3 /usr/local/bin/ipcams-cec-daemon.py
+
+Restart=always
+RestartSec=2
+
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
