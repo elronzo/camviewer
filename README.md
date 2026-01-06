@@ -133,8 +133,6 @@ RTSP_PORT=554
 RTSP_PATH=/h264Preview_01_sub
 ```
 
-**Do not commit `rtsp.env`.**
-
 ---
 
 ## systemd Services
@@ -269,3 +267,11 @@ Stable, in daily use, HDMI-CEC tested, fully reproducible.
 ## Author
 
 elronzo
+
+---
+
+## License
+
+This project is licensed under the MIT License.
+See the `LICENSE` file for details.
+
