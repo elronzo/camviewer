@@ -53,6 +53,23 @@ TV Remote (HDMI-CEC)
 
 ---
 
+## Screen and TTY Handling
+
+CamViewer runs directly on `tty1` without a desktop environment.
+
+To avoid boot messages and cloud-init output being visible during camera
+switching, a dedicated systemd unit is used:
+
+- `clear-tty1.service`
+
+This service:
+- runs once after boot
+- clears `tty1`
+- ensures a clean framebuffer for fullscreen `ffplay`
+
+It is intentionally separate from the player logic to keep responsibilities
+clear and avoid race conditions during startup.
+
 ## Repository Layout
 
 ```
@@ -164,6 +181,26 @@ sudo systemctl enable --now clear-tty1.service
 - TV with HDMI-CEC enabled (Samsung: AnyNet+)
 
 ---
+
+## Screen and TTY Handling
+
+CamViewer runs directly on `tty1` without a desktop environment.
+
+To avoid boot messages and cloud-init output being visible during camera
+switching, a dedicated systemd unit is used:
+
+- `clear-tty1.service`
+
+This service:
+- runs once after boot
+- clears `tty1`
+- ensures a clean framebuffer for fullscreen `ffplay`
+
+It is intentionally separate from the player logic to keep responsibilities
+clear and avoid race conditions during startup.
+
+---
+
 
 ## Status
 
