@@ -126,7 +126,7 @@ cp env/rtsp.env.example env/rtsp.env
 Example content:
 
 ```bash
-RTSP_USER=admin
+RTSP_USER=viewer
 RTSP_PASS=CHANGE_ME
 RTSP_DOMAIN=lan
 RTSP_PORT=554
