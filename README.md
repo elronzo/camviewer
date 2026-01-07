@@ -56,6 +56,21 @@ TV Remote (HDMI-CEC)
 
 CamViewer runs directly on `tty1` without a desktop environment.
 
+This works because a desktop environment (X11 or Wayland) is **not required to drive HDMI output on Linux**.  
+On Raspberry Pi OS, the kernel initializes the GPU and HDMI output using the **DRM/KMS graphics subsystem** during boot.
+
+`ffplay` uses **SDL2** for video output. In the absence of X11 or Wayland, SDL2 automatically selects the
+**DRM/KMS backend**, allowing video frames to be rendered directly to the screen via the kernel graphics driver.
+
+As a result:
+- no window manager is needed
+- no compositor is involved
+- no graphical login session is required
+- video output is rendered directly to HDMI
+
+The virtual terminal (`tty1`) owns the active display, and `ffplay` replaces the visible console output with
+fullscreen video. This approach is common in embedded systems, kiosks, and digital signage.
+
 To avoid boot messages and cloud-init output being visible during camera
 switching, a dedicated systemd unit is used:
 
